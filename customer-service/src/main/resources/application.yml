@@ -1,0 +1,41 @@
+micronaut:
+  application:
+    name: customer-service
+  server:
+    port: 9002
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/customer
+    username: postgres
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+
+# TODO doesn't work on @KafkaClient
+# https://github.com/micronaut-projects/micronaut-kafka/issues/247
+kafka:
+  producers:
+    default:
+      acks: all
+      max.in.flight.requests.per.connection: 1
+
+swagger-ui:
+  enabled: true
