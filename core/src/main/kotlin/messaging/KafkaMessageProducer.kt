@@ -1,8 +1,9 @@
-package messaging
+package org.fromlabs.demo.ordermanagement.core.messaging
 
 import io.micronaut.configuration.kafka.annotation.KafkaClient
 import io.micronaut.context.annotation.Property
 import io.micronaut.context.event.ApplicationEventPublisher
+import io.micronaut.scheduling.annotation.Async
 import io.micronaut.transaction.annotation.TransactionalEventListener
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
@@ -33,8 +34,13 @@ open class KafkaMessageProducer(
     }
 
     @TransactionalEventListener
-    internal open fun onCommitedMessages(event: MessagesCommittedEvent) {
-        event.messages.forEach<MessageData>(this@KafkaMessageProducer::send)
+    open fun onCommitedMessages(event: MessagesCommittedEvent) {
+        sendAsync(event.messages)
+    }
+
+    @Async
+    open fun sendAsync(messages: Sequence<MessageData>) {
+        messages.forEach<MessageData>(this@KafkaMessageProducer::send)
     }
 
     private fun send(message: MessageData) {

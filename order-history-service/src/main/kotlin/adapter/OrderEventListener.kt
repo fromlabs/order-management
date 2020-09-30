@@ -2,9 +2,9 @@ package org.fromlabs.demo.ordermanagement.orderhistory.adapter
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.type.TypeFactory
+import domain.DomainEventEnvelope
 import io.micronaut.configuration.kafka.annotation.KafkaListener
 import io.micronaut.configuration.kafka.annotation.Topic
-import messaging.DomainEventEnvelope
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.fromlabs.demo.ordermanagement.orderhistory.application.port.*
 import java.nio.charset.Charset

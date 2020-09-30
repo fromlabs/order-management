@@ -1,6 +1,6 @@
 package org.fromlabs.demo.ordermanagement.customer.adapter
 
-import messaging.DomainEventPublisher
+import domain.DomainEventPublisher
 import org.fromlabs.demo.ordermanagement.customer.application.port.CustomerEventPublisher
 import org.fromlabs.demo.ordermanagement.customer.domain.model.Customer
 import javax.inject.Singleton

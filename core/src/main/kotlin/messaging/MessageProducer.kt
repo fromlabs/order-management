@@ -1,4 +1,4 @@
-package messaging
+package org.fromlabs.demo.ordermanagement.core.messaging
 
 import java.time.Instant
 
