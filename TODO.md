@@ -1,6 +1,5 @@
 # TODO
-
-- gestione errori cancel su order state != da APPROVED 400
++ gestione errori cancel su order state != da APPROVED 400
 
 - retry producer?
 - retry consumer?

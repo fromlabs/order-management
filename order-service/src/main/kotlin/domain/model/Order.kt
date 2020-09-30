@@ -34,6 +34,8 @@ data class OrderCancelledEvent(
 
 class PendingOrderCantBeCancelledException : Exception()
 
+class OrderCantBeCancelledAnymoreException : Exception()
+
 data class Order(
     val id: Long = 0,
     val version: Int = 0,
@@ -102,7 +104,7 @@ data class Order(
                     )
                 )
             )
-            else -> throw UnsupportedOperationException()
+            else -> throw OrderCantBeCancelledAnymoreException()
         }
     }
 }
