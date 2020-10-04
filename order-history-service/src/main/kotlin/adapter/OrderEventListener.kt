@@ -1,11 +1,11 @@
 package org.fromlabs.demo.ordermanagement.orderhistory.adapter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.type.TypeFactory
-import domain.DomainEventEnvelope
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.micronaut.configuration.kafka.annotation.KafkaListener
 import io.micronaut.configuration.kafka.annotation.Topic
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.fromlabs.demo.ordermanagement.core.domain.DomainEventEnvelope
 import org.fromlabs.demo.ordermanagement.orderhistory.application.port.*
 import java.nio.charset.Charset
 
@@ -22,54 +22,26 @@ class OrderEventListener(
 
         when (eventType) {
             "order-created" -> {
-                val javaType = TypeFactory.defaultInstance()
-                    .constructParametricType(
-                        DomainEventEnvelope::class.java,
-                        Long::class.java,
-                        OrderCreatedEventDto::class.java
-                    )
-
                 val envelope =
-                    objectMapper.readValue<DomainEventEnvelope<Long, OrderCreatedEventDto>>(payload, javaType)
+                    objectMapper.readValue<DomainEventEnvelope<Long, OrderCreatedEventDto>>(payload)
 
                 customerOrderHistoryService.onOrderCreatedEvent(envelope.aggregateId, envelope.event)
             }
             "order-approved" -> {
-                val javaType = TypeFactory.defaultInstance()
-                    .constructParametricType(
-                        DomainEventEnvelope::class.java,
-                        Long::class.java,
-                        OrderApprovedEventDto::class.java
-                    )
-
                 val envelope =
-                    objectMapper.readValue<DomainEventEnvelope<Long, OrderApprovedEventDto>>(payload, javaType)
+                    objectMapper.readValue<DomainEventEnvelope<Long, OrderApprovedEventDto>>(payload)
 
                 customerOrderHistoryService.onOrderApprovedEvent(envelope.aggregateId, envelope.event)
             }
             "order-rejected" -> {
-                val javaType = TypeFactory.defaultInstance()
-                    .constructParametricType(
-                        DomainEventEnvelope::class.java,
-                        Long::class.java,
-                        OrderRejectedEventDto::class.java
-                    )
-
                 val envelope =
-                    objectMapper.readValue<DomainEventEnvelope<Long, OrderRejectedEventDto>>(payload, javaType)
+                    objectMapper.readValue<DomainEventEnvelope<Long, OrderRejectedEventDto>>(payload)
 
                 customerOrderHistoryService.onOrderRejectedEvent(envelope.aggregateId, envelope.event)
             }
             "order-cancelled" -> {
-                val javaType = TypeFactory.defaultInstance()
-                    .constructParametricType(
-                        DomainEventEnvelope::class.java,
-                        Long::class.java,
-                        OrderCancelledEventDto::class.java
-                    )
-
                 val envelope =
-                    objectMapper.readValue<DomainEventEnvelope<Long, OrderCancelledEventDto>>(payload, javaType)
+                    objectMapper.readValue<DomainEventEnvelope<Long, OrderCancelledEventDto>>(payload)
 
                 customerOrderHistoryService.onOrderCancelledEvent(envelope.aggregateId, envelope.event)
             }

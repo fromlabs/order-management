@@ -1,11 +1,11 @@
 package org.fromlabs.demo.ordermanagement.order.adapter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.type.TypeFactory
-import domain.DomainEventEnvelope
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.micronaut.configuration.kafka.annotation.KafkaListener
 import io.micronaut.configuration.kafka.annotation.Topic
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.fromlabs.demo.ordermanagement.core.domain.DomainEventEnvelope
 import org.fromlabs.demo.ordermanagement.order.application.port.CreateOrderSaga
 import org.fromlabs.demo.ordermanagement.order.application.port.CreditReservationFailedEventDto
 import org.fromlabs.demo.ordermanagement.order.application.port.CreditReservedEventDto
@@ -25,47 +25,20 @@ class CustomerEventListener(
 
         when (eventType) {
             "credit-reserved" -> {
-                val javaType = TypeFactory.defaultInstance()
-                    .constructParametricType(
-                        DomainEventEnvelope::class.java,
-                        Long::class.java,
-                        CreditReservedEventDto::class.java
-                    )
-
                 val envelope =
-                    objectMapper.readValue<DomainEventEnvelope<Long, CreditReservedEventDto>>(payload, javaType)
+                    objectMapper.readValue<DomainEventEnvelope<Long, CreditReservedEventDto>>(payload)
 
                 createOrderSaga.onCreditReservedEvent(envelope.aggregateId, envelope.event)
             }
             "customer-validation-failed" -> {
-                val javaType = TypeFactory.defaultInstance()
-                    .constructParametricType(
-                        DomainEventEnvelope::class.java,
-                        Long::class.java,
-                        CustomerValidationFailedEventDto::class.java
-                    )
-
                 val envelope =
-                    objectMapper.readValue<DomainEventEnvelope<Long, CustomerValidationFailedEventDto>>(
-                        payload,
-                        javaType
-                    )
+                    objectMapper.readValue<DomainEventEnvelope<Long, CustomerValidationFailedEventDto>>(payload)
 
                 createOrderSaga.onCustomerValidationFailedEvent(envelope.aggregateId, envelope.event)
             }
             "credit-reservation-failed" -> {
-                val javaType = TypeFactory.defaultInstance()
-                    .constructParametricType(
-                        DomainEventEnvelope::class.java,
-                        Long::class.java,
-                        CreditReservationFailedEventDto::class.java
-                    )
-
                 val envelope =
-                    objectMapper.readValue<DomainEventEnvelope<Long, CreditReservationFailedEventDto>>(
-                        payload,
-                        javaType
-                    )
+                    objectMapper.readValue<DomainEventEnvelope<Long, CreditReservationFailedEventDto>>(payload)
 
                 createOrderSaga.onCreditReservationFailedEvent(envelope.aggregateId, envelope.event)
             }

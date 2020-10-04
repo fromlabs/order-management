@@ -1,11 +1,11 @@
 package org.fromlabs.demo.ordermanagement.orderhistory.adapter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.type.TypeFactory
-import domain.DomainEventEnvelope
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.micronaut.configuration.kafka.annotation.KafkaListener
 import io.micronaut.configuration.kafka.annotation.Topic
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.fromlabs.demo.ordermanagement.core.domain.DomainEventEnvelope
 import org.fromlabs.demo.ordermanagement.orderhistory.application.port.CustomerCreatedEventDto
 import org.fromlabs.demo.ordermanagement.orderhistory.application.port.CustomerOrderHistoryService
 import java.nio.charset.Charset
@@ -23,15 +23,8 @@ class CustomerEventListener(
 
         when (eventType) {
             "customer-created" -> {
-                val javaType = TypeFactory.defaultInstance()
-                    .constructParametricType(
-                        DomainEventEnvelope::class.java,
-                        Long::class.java,
-                        CustomerCreatedEventDto::class.java
-                    )
-
                 val envelope =
-                    objectMapper.readValue<DomainEventEnvelope<Long, CustomerCreatedEventDto>>(payload, javaType)
+                    objectMapper.readValue<DomainEventEnvelope<Long, CustomerCreatedEventDto>>(payload)
 
                 customerOrderHistoryService.onCustomerCreatedEvent(envelope.aggregateId, envelope.event)
             }

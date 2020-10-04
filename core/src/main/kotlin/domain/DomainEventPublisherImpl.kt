@@ -1,10 +1,9 @@
-package domain
+package org.fromlabs.demo.ordermanagement.core.domain
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.common.base.CaseFormat
 import com.google.common.base.Converter
 import io.micronaut.core.beans.BeanIntrospection
-import org.fromlabs.demo.ordermanagement.core.domain.DomainEvent
 import org.fromlabs.demo.ordermanagement.core.messaging.MessageData
 import org.fromlabs.demo.ordermanagement.core.messaging.MessageDataHeader
 import org.fromlabs.demo.ordermanagement.core.messaging.MessageProducer
