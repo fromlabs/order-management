@@ -1,8 +1,8 @@
 # TODO
 + gestione errori cancel su order state != da APPROVED 400
 
-- retry producer?
-- retry consumer?
+- retry consumer KafkaListenerExceptionHandler
+- porting a Micronaut 2.1.0 con Kotlin 1.4.0 
 
 - test a vari livelli
 

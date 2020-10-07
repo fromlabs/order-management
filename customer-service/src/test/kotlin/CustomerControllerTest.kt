@@ -4,8 +4,8 @@ import com.nhaarman.mockitokotlin2.mock
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.client.annotation.Client
-import io.micronaut.test.annotation.MicronautTest
 import io.micronaut.test.annotation.MockBean
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.fromlabs.demo.ordermanagement.customer.application.port.CustomerService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

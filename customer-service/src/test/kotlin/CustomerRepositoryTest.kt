@@ -1,6 +1,6 @@
 package org.fromlabs.demo.ordermanagement.customer
 
-import io.micronaut.test.annotation.MicronautTest
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.fromlabs.demo.ordermanagement.customer.adapter.CustomerEntity
 import org.fromlabs.demo.ordermanagement.customer.adapter.CustomerRepository
 import org.fromlabs.demo.ordermanagement.customer.adapter.MoneyEmbeddable

@@ -11,11 +11,12 @@ import io.swagger.v3.oas.annotations.info.Info
         description = "Customer Service API"
     )
 )
-object CustomerApplication {
-
-    @JvmStatic
-    fun main(args: Array<String>) {
-        Micronaut.run(CustomerApplication.javaClass)
-    }
+object Api {
 }
 
+fun main(args: Array<String>) {
+    Micronaut.build()
+        .args(*args)
+        .packages("org.fromlabs.demo.ordermanagement.customer")
+        .start()
+}

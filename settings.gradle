@@ -1,6 +1,0 @@
-rootProject.name = "order-management"
-
-include("core")
-include("customer-service")
-include("order-service")
-include("order-history-service")
