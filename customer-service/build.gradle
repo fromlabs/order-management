@@ -48,12 +48,13 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.postgresql:postgresql")
 
-
     testImplementation("org.mockito:mockito-core:3.5.10")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+
+    testRuntimeOnly("com.h2database:h2")
 }
 
-mainClassName = "org.fromlabs.demo.ordermanagement.customer.ApplicationKt"
+mainClassName = "org.fromlabs.demo.ordermanagement.customer.CustomerApplication"
 java {
     sourceCompatibility = JavaVersion.toVersion('11')
 }
