@@ -1,117 +1,79 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm"
-    id "org.jetbrains.kotlin.kapt"
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.3.72"
-    id "org.jetbrains.kotlin.plugin.jpa" version "1.3.72"
+    id "org.jetbrains.kotlin.jvm" version "1.4.10"
+    id "org.jetbrains.kotlin.kapt" version "1.4.10"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.4.10"
+    id "org.jetbrains.kotlin.plugin.jpa" version "1.4.10"
     id "com.github.johnrengelman.shadow" version "6.0.0"
-    id "application"
+    id "io.micronaut.application" version "1.0.3"
 }
 
 version "0.1.0-SNAPSHOT"
 group "org.fromlabs.demo.ordermanagement"
 
-configurations {
-    // for dependencies that are needed for development only
-    developmentOnly
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+micronaut {
+    runtime "netty"
+    testRuntime "junit5"
+    processing {
+        incremental true
+        annotations "org.fromlabs.demo.ordermanagement.order.*"
+    }
 }
 
 dependencies {
-    compile(project(":core"))
+    implementation("org.fromlabs.demo.ordermanagement:core:0.1.0-SNAPSHOT")
 
-    kapt(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    kapt("io.micronaut:micronaut-inject-java")
-    kapt("io.micronaut:micronaut-validation")
-    kapt("io.micronaut.configuration:micronaut-openapi")
     kapt("io.micronaut.data:micronaut-data-processor")
+    kapt("io.micronaut.openapi:micronaut-openapi")
 
-    implementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    implementation("io.micronaut:micronaut-inject")
     implementation("io.micronaut:micronaut-validation")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut:micronaut-runtime")
     implementation("javax.annotation:javax.annotation-api")
-    implementation("io.micronaut:micronaut-http-server-netty")
     implementation("io.micronaut:micronaut-http-client")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
     implementation("io.swagger.core.v3:swagger-annotations")
+    implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
     implementation("io.micronaut.flyway:micronaut-flyway")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
-    implementation("io.micronaut.sql:micronaut-hibernate-jpa")
-    implementation("io.micronaut.flyway:micronaut-flyway")
-    implementation("io.micronaut.kafka:micronaut-kafka:3.0.0")
+    implementation("io.micronaut.kafka:micronaut-kafka")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.postgresql:postgresql")
-    kaptTest(enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion"))
-    kaptTest("io.micronaut:micronaut-inject-java")
-    testImplementation(enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
+
     testImplementation("org.mockito:mockito-core:3.5.10")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-}
 
-test.classpath += configurations.developmentOnly
+    testRuntimeOnly("com.h2database:h2")
+}
 
 mainClassName = "org.fromlabs.demo.ordermanagement.order.OrderApplication"
-
-// use JUnit 5 platform
-test {
-    useJUnitPlatform()
-}
-
 java {
     sourceCompatibility = JavaVersion.toVersion('11')
 }
 
-allOpen {
-    annotation("io.micronaut.aop.Around")
-}
 compileKotlin {
     kotlinOptions {
         jvmTarget = '11'
-        //Will retain parameter names for Java reflection
-        javaParameters = true
-        freeCompilerArgs = ["-Xinline-classes"]
     }
 }
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = '11'
-        javaParameters = true
     }
 }
+
 kapt {
     arguments {
-        // FIXME forse legato a https://youtrack.jetbrains.com/issue/KT-40493
-        // arg("micronaut.processing.incremental", true)
-        arg("micronaut.processing.annotations", "org.fromlabs.demo.ordermanagement.order.*")
-        arg("micronaut.processing.group", "org.fromlabs.demo.ordermanagement")
-        arg("micronaut.processing.module", "order-service")
         arg("micronaut.openapi.views.spec", "swagger-ui.enabled=true,swagger-ui.theme=flattop")
     }
 }
-
-shadowJar {
-    mergeServiceFiles()
-}
-
-tasks.withType(JavaExec) {
-    classpath += configurations.developmentOnly
-    jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
-    if (gradle.startParameter.continuous) {
-        systemProperties(
-                'micronaut.io.watch.restart': 'true',
-                'micronaut.io.watch.enabled': 'true',
-                "micronaut.io.watch.paths": "src/main"
-        )
-    }
-}
-
 
 
