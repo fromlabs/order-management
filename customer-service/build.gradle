@@ -46,6 +46,11 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.postgresql:postgresql")
+
+
+    testImplementation("org.mockito:mockito-core:3.5.10")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
 
 mainClassName = "org.fromlabs.demo.ordermanagement.customer.ApplicationKt"
