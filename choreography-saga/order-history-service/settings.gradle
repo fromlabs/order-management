@@ -1,3 +1,3 @@
 rootProject.name="order-history-service"
 
-includeBuild("../core")
+includeBuild("../../core")

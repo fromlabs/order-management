@@ -11,7 +11,7 @@ import org.apache.kafka.common.header.internals.RecordHeader
 import org.slf4j.LoggerFactory
 import javax.inject.Singleton
 
-data class MessagesCommittedEvent(val messages: Sequence<MessageData>);
+data class MessagesCommittedEvent(val messages: Sequence<MessageData>)
 
 @Singleton
 open class KafkaMessageProducer(

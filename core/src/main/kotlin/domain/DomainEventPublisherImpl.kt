@@ -19,6 +19,10 @@ class DomainEventPublisherImpl(
     private val messageProducer: MessageProducer,
     private val objectMapper: ObjectMapper
 ) : DomainEventPublisher {
+    init {
+        println("DomainEventPublisherImpl()");
+    }
+
     override fun publish(domain: String, aggregateType: String, aggregateId: Any, events: Sequence<Any>) {
         messageProducer.send(events.map { event: Any ->
             val eventType: String = resolveDomainEventType(event)

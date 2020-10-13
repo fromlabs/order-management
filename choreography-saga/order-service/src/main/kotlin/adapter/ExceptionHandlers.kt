@@ -5,6 +5,8 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Produces
+import io.micronaut.http.hateoas.JsonError
+import io.micronaut.http.hateoas.Link
 import io.micronaut.http.server.exceptions.ExceptionHandler
 import org.fromlabs.demo.ordermanagement.order.domain.model.OrderCantBeCancelledAnymoreException
 import org.fromlabs.demo.ordermanagement.order.domain.model.PendingOrderCantBeCancelledException
@@ -21,8 +23,10 @@ class PendingOrderCantBeCancelledExceptionHandler :
     override fun handle(
         request: HttpRequest<*>,
         exception: PendingOrderCantBeCancelledException
-    ): HttpResponse<String> {
-        return HttpResponse.badRequest("Pending order can't be cancelled")
+    ): HttpResponse<JsonError> {
+        val error = JsonError("Pending order can't be cancelled")
+        error.link(Link.SELF, Link.of(request.uri))
+        return HttpResponse.badRequest(error)
     }
 }
 
@@ -37,7 +41,9 @@ class OrderCantBeCancelledAnymoreExceptionHandler :
     override fun handle(
         request: HttpRequest<*>,
         exception: OrderCantBeCancelledAnymoreException
-    ): HttpResponse<String> {
-        return HttpResponse.badRequest("Order can't be cancelled anymore")
+    ): HttpResponse<JsonError> {
+        val error = JsonError("Order can't be cancelled anymore")
+        error.link(Link.SELF, Link.of(request.uri))
+        return HttpResponse.badRequest(error)
     }
 }

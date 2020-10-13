@@ -25,7 +25,7 @@ micronaut {
 }
 
 dependencies {
-    implementation("org.fromlabs.demo.ordermanagement:core:0.1.0-SNAPSHOT")
+    implementation("org.fromlabs.demo.ordermanagement:core:0.2.0-SNAPSHOT")
 
     kapt("io.micronaut.data:micronaut-data-processor")
     kapt("io.micronaut.openapi:micronaut-openapi")

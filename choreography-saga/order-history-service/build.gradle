@@ -2,7 +2,6 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.4.10"
     id "org.jetbrains.kotlin.kapt" version "1.4.10"
     id "org.jetbrains.kotlin.plugin.allopen" version "1.4.10"
-    id "org.jetbrains.kotlin.plugin.jpa" version "1.4.10"
     id "com.github.johnrengelman.shadow" version "6.0.0"
     id "io.micronaut.application" version "1.0.3"
 }
@@ -20,14 +19,13 @@ micronaut {
     testRuntime "junit5"
     processing {
         incremental true
-        annotations "org.fromlabs.demo.ordermanagement.order.*"
+        annotations "org.fromlabs.demo.ordermanagement.orderhistory.*"
     }
 }
 
 dependencies {
-    implementation("org.fromlabs.demo.ordermanagement:core:0.1.0-SNAPSHOT")
+    implementation("org.fromlabs.demo.ordermanagement:core:0.2.0-SNAPSHOT")
 
-    kapt("io.micronaut.data:micronaut-data-processor")
     kapt("io.micronaut.openapi:micronaut-openapi")
 
     implementation("io.micronaut:micronaut-validation")
@@ -39,22 +37,17 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
-    implementation("io.micronaut.flyway:micronaut-flyway")
-    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
-    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.mongodb:micronaut-mongo-sync")
     implementation("io.micronaut.kafka:micronaut-kafka")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     runtimeOnly("ch.qos.logback:logback-classic")
-    runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.mockito:mockito-core:3.5.10")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
-
-    testRuntimeOnly("com.h2database:h2")
 }
 
-mainClassName = "org.fromlabs.demo.ordermanagement.order.OrderApplication"
+mainClassName = "org.fromlabs.demo.ordermanagement.orderhistory.OrderHistoryApplication"
 java {
     sourceCompatibility = JavaVersion.toVersion('11')
 }
@@ -75,5 +68,3 @@ kapt {
         arg("micronaut.openapi.views.spec", "swagger-ui.enabled=true,swagger-ui.theme=flattop")
     }
 }
-
-
